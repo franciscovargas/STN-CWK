@@ -3,6 +3,7 @@ import numpy as np
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
+import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 dic = pickle.load( open( "biodict.pickle", "rb" ) )
@@ -20,8 +21,9 @@ for key in dic:
     for key1 in dic1:
         if(key!=key1):
 
-            if(dic[key] and dic1[key1]):
-
+            if((re.sub("[ ]+", "", dic[key])!="") and (re.sub("[ ]+", "", dic1[key1])!="")):
+                print "Person: ", dic[key]
+                print "Person: ", dic1[key1]
                 tfidf = vect.fit_transform([(dic[key]),(dic1[key1])])
                 tfidf =(tfidf * tfidf.T).A[0,1]
                 #results.append(tfidf)
