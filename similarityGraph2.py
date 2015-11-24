@@ -31,11 +31,10 @@ coefs = list()
 def embed_nodes(g, x, y):
     return dict((g.nodes()[i], (x[i],y[i])) for i in range(len(g.nodes())))
 
+joint_dict = dict()
 for key in dic3:
     for key1 in dic1:
         if(key!=key1):
-
-
             # print "Person: ", dic[key]
             # print "Person: ", dic1[key1]
             tfidf = vect.fit_transform([(dic[key]),(dic1[key1])])
@@ -43,27 +42,38 @@ for key in dic3:
             coefs.append(tfidf)
             #results.append(tfidf)
             prob = random.random()
-            if (tfidf > 0.2   or prob < 0.001):
+            joint_dict[str(key) + str(key1)] = tfidf
+
+
+# plt.hist(coefs)
+data = [c  for c in coefs ]
+mu = np.mean([c for c in coefs if c != 0])
+std = np.std([c for c in coefs if c != 0])
+
+for key in dic3:
+    for key1 in dic1:
+        if(key!=key1):
+            x = joint_dict[str(key) + str(key1)]
+            prob = random.random()
+            if( x - mu > 2* std  or prob < 0.00001):
                 G.add_edge(key,key1)
 
-plt.hist(coefs)
-print np.mean([c for c in coefs if c != 0])
-print np.sum([c for c in coefs if c != 0])
-print stats.mode([c for c in coefs if c != 0])
-print np.max([c for c in coefs if c != 0])
-print np.min([c for c in coefs if c != 0])
-print np.std([c for c in coefs if c != 0])
+
+binwidth = 0.007
+plt.hist(data, bins=np.arange(min(data), max(data) + binwidth, binwidth))
+
+
 plt.show()
 outdeg = G.degree()
-G.remove_nodes_from([n for n in outdeg if outdeg[n] == 0])
+G = max(nx.connected_component_subgraphs(G),key=len)
 
 lapgr = nx.laplacian_matrix(G)
 (w,v) = lin.eigh(lapgr.todense())
-emb = embed_nodes(G,v[:,1].ravel().tolist()[0],v[:,2].ravel().tolist()[0])
+emb = embed_nodes(G,v[:,1].ravel().tolist()[0], v[:,2].ravel().tolist()[0])
 # plt.figure(figsize=(,2))
-# nx.draw_networkx(G, pos=emb, node_size=10, with_labels=False)
-
-# nx.draw(G)
+nx.draw_networkx(G, pos=emb, node_size=100, with_labels=False)
+plt.show()
+nx.draw(G)
 
 
 # j=3
