@@ -169,8 +169,8 @@ def communityGraph(graph):
     evals,evec = np.linalg.eigh(lapgr.todense()) #Get the eigenvalues and eigenvectors of the Laplacian matrix
     print "Value", evals
     print "Vector", evec
-    print evals[2]==evals[3]
-    print list(graph.degree().values())
+    #print evals[2]==evals[3]
+    #print list(graph.degree().values())
 
     fiedler = evec[1]
     results =[]
@@ -206,8 +206,11 @@ def showEigenspace(G, V,k ):
 def specKMeans(graph,evec, k):
     nodeCluster = dict()
     evec = evec.T[1:k+1,:]
-    print evec.shape
-    y_pred = KMeans(n_clusters=k).fit_predict(evec.T)
+    #print evec.shape
+    kmeans = KMeans(n_clusters=k)
+    y_pred = kmeans.fit_predict(evec.T)
+    centroids = kmeans.cluster_centers_
+    print "Centroids", centroids
     i=0
     for node in graph:
         nodeCluster[node] = y_pred[i]
@@ -216,14 +219,14 @@ def specKMeans(graph,evec, k):
 
 if __name__ == '__main__':
     graph = buildGraph()
-    print len(graph.nodes())
+    #print len(graph.nodes())
 
     #nx.draw_networkx(graph)
     #plt.show() 
     
     results, evals, evec = communityGraph(graph)
     kmeans, cluster = specKMeans(graph, evec, 2)
-    print cluster
+    #print cluster
     
     #first, second = splitGraph(graph,results)
     
