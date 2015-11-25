@@ -12,7 +12,7 @@ from numpy import linalg as LA
 from sklearn.cluster import KMeans
 
 def buildGraph():
-    dic = pickle.load( open( "biodictdist4.pickle", "rb" ) )
+    dic = pickle.load( open( "BiodictData/biodictdist4.pickle", "rb" ) )
     
     dic1 = dic
     G=nx.Graph()

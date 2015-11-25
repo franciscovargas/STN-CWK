@@ -10,7 +10,9 @@ import numpy as np
 import numpy.linalg as lin
 import scipy.stats as stats
 
-dic = pickle.load( open( "biodict.pickle", "rb" ) )
+dic = pickle.load( open( "BiodictData/biodictdist64.pickle", "rb" ) )
+print len(dic)
+exit()
 results =[]
 
 dic1 = dic
@@ -35,8 +37,8 @@ joint_dict = dict()
 for key in dic3:
     for key1 in dic1:
         if(key!=key1):
-            # print "Person: ", dic[key]
-            # print "Person: ", dic1[key1]
+            print "Person: ", dic[key]
+            print "Person: ", dic1[key1]
             tfidf = vect.fit_transform([(dic[key]),(dic1[key1])])
             tfidf =(tfidf * tfidf.T).A[0,1]
             coefs.append(tfidf)
