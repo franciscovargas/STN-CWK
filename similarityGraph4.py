@@ -11,6 +11,8 @@ from numpy import linalg as LA
 
 from sklearn.cluster import KMeans
 
+from aggregate_dist import agg_dist
+
 def buildGraph(pickl):
     dic = pickl
     
@@ -272,9 +274,9 @@ def construct(pickl,startVector, endVector):
     #nx.draw_networkx_edges(graph,pos=emb,width=1.0,alpha=0.5)
     return centroids, franVectors
 def fran(startVector, endVector):
-    pickl = pickle.load( open( "biodictdist4.pickle", "rb" ) )
+    pickl = pickle.load( open( "BiodictData/biodictdist4.pickle", "rb" ) )
     centr1, franVectors1 = construct(pickl, startVector, endVector)
-    pickl = pickle.load( open( "biodictdist8.pickle", "rb" ) )
+    pickl = pickle.load( open( "BiodictData/biodictdist8.pickle", "rb" ) )
     centr2, franVectors2 = construct(pickl, startVector, endVector)
     centr = list()
     franVectors = list()
@@ -294,8 +296,10 @@ if __name__ == '__main__':
     centr2 = construct(pickl)
     '''
     centr, franVectors = fran(1,2) 
-    print "Centroids" , centr
-    print "Vectors", franVectors
+    # print "Centroids" , centr
+    # print "Vectors", franVectors
+    print "time"
+    print agg_dist(franVectors, centr)
     '''
     centroids = list()
     dist = list()
