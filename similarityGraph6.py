@@ -11,7 +11,7 @@ from numpy import linalg as LA
 
 from sklearn.cluster import KMeans
 
-# from aggregate_dist import agg_dist
+# Gaussian probability density function
 gaussian = lambda x, mu, sig: (np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))) / (np.sqrt(2*np.pi) * sig) 
 
 def buildGraph(pickl):
@@ -28,6 +28,7 @@ def buildGraph(pickl):
     dic3 = dict(dic)
     checked = []
     
+    # Adding nodes with bios greater than 30 words.
     for key in dic:
         if((re.sub("[ ]+", "", dic[key])!="") and len(dic[key]) ) > 30:
             G.add_node(key)
@@ -96,42 +97,6 @@ def buildGraph(pickl):
     G = max(nx.connected_component_subgraphs(G),key=len)
     return G
 
-def laplacianMatrix(graph):   
-    #graph = buildGraph()  
-      
-    A = nx.adjacency_matrix(graph)
-    A = A.todense()
-    degree = 0
-    degreeVector = []
-    ## (A)
-
-    for i in range(0,(len(A))):
-
-        for j in range(0, (A[i].size)):
-            if(A[i,j]==1):
-                degree += 1.0
-                A[i,j] = -float(1.0)
-            else:
-                A[i,j] = float(0.0)
-        A[i,i] = float(float(degree) - float(A[i,i]))    #Compute the Laplacian matrix inside of A
-        if (degree!=0):
-            degreeVector.append(float(1/np.sqrt(degree)))
-        else:
-            degreeVector.append(0)
-        degree = 0
-    
-    identity = np.identity(len(A))
-    degreeMatrix = identity*degreeVector
-    ## degreeMatrix
-
-
-    ## A 
-    normA = degreeMatrix*A*degreeMatrix
-    ## normA
-
-    eigVal,eigVectors = eigs(normA, 2,  which='LM')
-    #Val,Vec = LA.eig(A)
-    return A, eigVectors
  
 
 def splitGraph(graph, results):   
@@ -182,19 +147,15 @@ def communityGraph(graph):
     """
     
     lapgr = nx.laplacian_matrix(graph)
-    # lapgr.T == lapgr
 
     evals,evec = np.linalg.eigh(lapgr.todense()) #Get the eigenvalues and eigenvectors of the Laplacian matrix
-    # "Value", evals
-    # "Vector", evec
-    ## evals[2]==evals[3]
-    ## list(graph.degree().values())
+
 
     fiedler = evec[1]
     results =[]
     ## "Fiedler", fiedler
-    median = np.median(fiedler, axis=1) #median of the second eigenvalue
-    for i in range (0,fiedler.size):    #divide the graph nodes into two
+    median = np.median(fiedler, axis=1) # median of the second eigenvalue
+    for i in range (0,fiedler.size):    # divide the graph nodes into two
         if(fiedler[0,i]<median):
             results.append(0)
         else:
@@ -227,13 +188,17 @@ def showEigenspace(G, V,k ):
     plt.show()
     
 def specKMeans(graph,evec, k):
+    """
+    Spectral Kmeans algorithm:
+    1. Spectral graph representation in Laplacian eigen supbspace R^k
+    2. Kmeans clustering on our R^k space
+    """
     nodeCluster = dict()
     evec = evec.T[1:k+1,:]
-    ## evec.shape
+
     kmeans = KMeans(n_clusters=k)
     y_pred = kmeans.fit_predict(evec.T)
     centroids = kmeans.cluster_centers_
-    # "Centroids", centroids
     i=0
     for node in graph:
         nodeCluster[node] = y_pred[i]
@@ -293,6 +258,8 @@ def construct(pickl,startVector, endVector):
     '''
     #nx.draw_networkx_edges(graph,pos=emb,width=1.0,alpha=0.5)
     return centroids, franVectors
+
+
 def fran(startVector, endVector):
     pickl = pickle.load( open( "BiodictData/biodictdist4.pickle", "rb" ) )
     centr1, franVectors1 = construct(pickl, startVector, endVector)
