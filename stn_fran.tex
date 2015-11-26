@@ -138,7 +138,7 @@ Now given that our assumption seems reasonable we construct the following boolea
 (x_{\text{node pair coefficient}} - \mu) > 2\sigma
 \]
 
-Where: $$\mu = \frac{2}{N(N+1)}\sum_{x \in \text{node coefficients pairs} } x$$  $$\sigma = \frac{2}{N^(N+1)}\sum_{x \in \text{node coefficients pairs} } (x- \mu)^{2}$$
+Where: $$\mu = \frac{2}{N(N-1)}\sum_{x \in \text{node coefficients pairs} } x$$  $$\sigma = \frac{2}{N^(N-1)}\sum_{x \in \text{node coefficients pairs} } (x- \mu)^{2}$$
 What our boolean test tells us is that if a coefficient $x_{\text{node pair coefficient}}$ is away from the mean of our coefficient pair distribution by twice the standard deviation then it is 95\%  likely that this pair does not belong to this distribution of people that do not know each other and thus implying that they know each meaning that we construct an edge between the two nodes over which the coefficient was computed. This yields us graphs of the form:
 \hspace*{-2cm}
 \includegraphics[scale=0.2]{pics/spring.png}
