@@ -72,10 +72,14 @@ def buildGraph(pickl):
     plt.subplot(1,2,0)
     plt.hist(data, bins=np.arange(min(data), max(data) + binwidth, binwidth))
     # PLot gaussian fit contrast
+    plt.xlabel("$cos(\\theta)$")
+    plt.ylabel("frecuency count of $cos(\\theta)$ values")
     plt.subplot(1,2,1)
     plt.plot(np.arange(0, max(data), 0.001),
              gaussian(np.arange(0, max(data), 0.001), mu, std),
              linewidth=2)
+    plt.xlabel("$cos(\\theta)$")
+    plt.ylabel("fitted gaussian")
     plt.show()
 
     # Edge creation !
@@ -210,7 +214,7 @@ def construct(pickl,startVector, endVector):
 
         
     results, evals, evec = communityGraph(graph)
-    kmeans, cluster, centroids = specKMeans(graph, evec, 2)
+    kmeans, cluster, centroids = specKMeans(graph, evec, 3)
     
     #first, second = splitGraph(graph,results)
     franVectors = list()
@@ -246,6 +250,8 @@ def construct(pickl,startVector, endVector):
     #nx.draw(graph, node_color=[color_map[graph.node[node]['category']] for node in graph]) 
 
     nx.draw_networkx(graph, pos=emb, node_size=100, with_labels=False, node_color=[color_map[graph.node[node]['category']] for node in graph])
+    plt.xlabel("second eigen vector")
+    plt.ylabel("third eigen vector")
     plt.show()
     '''
     nx.draw_networkx_nodes(graph,pos = emb,

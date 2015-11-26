@@ -5,9 +5,12 @@ import similarityGraph5 as sg
 import matplotlib.pyplot as plt
 
 def agg_dist(clusters, centroids):
-    # print len(clusters), len(centroids)
-    # print centroids
-    # centroids = centroids[0
+    """
+    Finds intra cluster agregate distance
+    for each cluster and sums them up
+    as an overal measure of dispersion 
+    in the clustering.
+    """
     euc_dists = list()
     for i, clut in enumerate(clusters):
 
@@ -28,6 +31,10 @@ def agg_dist(clusters, centroids):
 
 
 def build_eigen_space_clusters(ypred, V, k):
+    """
+    Builds the euclidean space for the
+    spectral clustering to happen.
+    """
     out_clust = [[]]*k
 
     for i, y in enumerate(ypred):
@@ -39,6 +46,10 @@ def build_eigen_space_clusters(ypred, V, k):
 
 
 def evaluate_kmeans_radial(graphs, k):
+    """
+    Carries out our cluster metrics for different balls
+    of radius tinder generated graphs.
+    """
     result = list()
     final_result = list()
     for graph in sorted(graphs.keys()):
@@ -51,11 +62,16 @@ def evaluate_kmeans_radial(graphs, k):
 
 
 def evaluate_kmeans_clust_no(graph,k_min, k_max):
+    """
+    Carries out our cluster metrics for different clusters
+    and a given ball of radius tinder graph. 
+    This is used to pick the best cluster number
+    based on methods from machine learning.
+    """
     result = list()
     final_result = list()
     r, e, V = sg.communityGraph(graph)
     for k in range(k_min, k_max):
-        # print k
         ypred, nodeCluster, centroids = sg.specKMeans(graph, V, k)
         result.append((build_eigen_space_clusters(ypred, V, k), centroids))
     for n, c in result:
@@ -65,8 +81,8 @@ def evaluate_kmeans_clust_no(graph,k_min, k_max):
 if __name__ == "__main__":
         typ = 'r'
         g_dict =  pickle.load(open("giganticData", "rb"))
-        print len(g_dict)
-        # Best fond k was 12
+
+        # Best fond k was 10 second was 12.
         k = 10
 
         # for radial cluster
