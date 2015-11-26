@@ -93,13 +93,13 @@ Since $A_{ii}=0$  (A node connected to itself is trivial in our system and thus 
 \]
 
 \[
-\frac{d}{dt}u_{i}(t) = -\kappa \sum_{j=1}^{N}(\delta_{ij} deg(i) -A_{ij}u_{j}(t))
+\frac{d}{dt}u_{i}(t) = -\kappa \sum_{j=1}^{N}(\delta_{ij} deg(i) -A_{ij})u_{j}(t)
 \]
 Which we can compact in to the vector matrix form (Where $D$ is the diagonal degree matrix):
 \[
 \frac{d}{dt}\underline{u}(t) = -\kappa\underbrace{(D -A)}_{L}\underline{u}(t)
 \]
-This gives us a first order linear system of differential equations (similar to the heat equation if $L = \nabla^{2}$). Due to basic properties of matrix algebra solving this equation is rather trivial. I will provide a run through solution given that we ignore initial conditions for simplicity.
+This gives us a first order linear system of differential equations (exact to the heat equation if $L = \nabla^{2}$). Due to basic properties of matrix algebra solving this equation is rather trivial. I will provide a run through solution given that we ignore initial conditions for simplicity.
 \[
 \frac{d}{dt}\underline{u}(t) = -\kappa L\underline{u}(t)
 \]
@@ -120,7 +120,7 @@ The cosine similarity measure for two vectors $\underline{v} $ and $\underline{u
 \[
 cos(\theta) = \frac{\underline{v}\cdot \underline{u}}{||\underline{v}|| \: ||\underline{u}||}
 \]
-which just tells us how close two vectors are too each other. Now all we need to do this is transform our biographies in to vectors. In order to do this we check the words existing across all biographies and either make a word count vector or a binary vector for each node. Scikit learn provides us with a function to efficiently compute this. 
+which just tells us how close two vectors are to each other. Now all we need to do this is transform our biographies in to vectors. In order to do this we check the words existing across all biographies and word frequency vector for each node relative to the corpus of biographies (tf-idf). Scikit learn provides us with a function to efficiently compute this. 
 \newline\newline
 Post to this
 we can calculate the cosine similarity measure in between vectors which gives us a measure of how similar to bios are for all bios in our node space.
@@ -138,7 +138,7 @@ Now given that our assumption seems reasonable we construct the following boolea
 (x_{\text{node pair coefficient}} - \mu) > 2\sigma
 \]
 
-Where: $$\mu = \frac{1}{N^{2}}\sum_{x \in \text{node coefficients pairs} } x$$  $$\sigma = \frac{1}{N^{2}}\sum_{x \in \text{node coefficients pairs} } (x- \mu)^{2}$$
+Where: $$\mu = \frac{2}{N(N+1)}\sum_{x \in \text{node coefficients pairs} } x$$  $$\sigma = \frac{2}{N^(N+1)}\sum_{x \in \text{node coefficients pairs} } (x- \mu)^{2}$$
 What our boolean test tells us is that if a coefficient $x_{\text{node pair coefficient}}$ is away from the mean of our coefficient pair distribution by twice the standard deviation then it is 95\%  likely that this pair does not belong to this distribution of people that do not know each other and thus implying that they know each meaning that we construct an edge between the two nodes over which the coefficient was computed. This yields us graphs of the form:
 \hspace*{-2cm}
 \includegraphics[scale=0.2]{pics/spring.png}
@@ -159,8 +159,8 @@ $\textbf{Ouput } ClusteredNodes$
 4.  $V$.sortInAscentBy($\Lambda$)
 5   $V$ := fisrt k rows in $V$
 6.  NodeKSpace := {}
-7.  for $\underline{n_{k}}$ $\in$ $V^{T}$:
-8.       NodeKSpace $U$ {$\underline{n_{k}}$}
+7.  for $\underline{n}_{k}$ $\in$ $V^{T}$: // Extracting rows from $V^T$
+8.       NodeKSpace := NodeKSpace $\cup$ {$\underline{n}_{k}$}
 9.  ClusteredNodes = kMeans(NodeKSpace, k)
 \end{lstlisting}
 
@@ -192,7 +192,7 @@ of the communities as we grow the radius. This tells us how density of our commu
 in space (radius). Which in a sense tells us how this aspect is evolving.
 \newline\newline
 We can explore our results (findings) by plotting the intra cluster aggregate distance vs the radii size (for our best cluster number 14):
-\includegraphics[scale=0.4]{pics/radii.png}
+\includegraphics[scale=0.34]{pics/radii.png}
 
 As we can observe the density of the clusters
 seems to increase almost monotonically but then every now and then it experiences a decrease in density. 
@@ -207,5 +207,6 @@ I believe this increase is because these small isolated incomers are starting to
 \item Einan Gardi , Dynamics \url{http://www2.ph.ed.ac.uk/~egardi/Dynamics/Dynamics_2014_lecture_12.pdf}
 \item  Yale, Introduction to the Laplacian \url{http://www.cs.yale.edu/homes/spielman/561/2009/lect02-09.pdf}
 \item V. Lavrenko, Clustering \url{http://www.inf.ed.ac.uk/teaching/courses/iaml/slides/kmeans-2x2.pdf}
+\item tf-idf \url{https://en.wikipedia.org/wiki/Tf%E2%80%93idf}
 \end{enumerate}
 \end{document}
