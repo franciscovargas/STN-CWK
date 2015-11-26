@@ -85,13 +85,13 @@ Since $A_{ii}=0$  (A node connected to itself is trivial in our system and thus 
 \]
 
 \[
-\frac{d}{dt}u_{i}(t) = -\kappa \sum_{j=1}^{N}(\delta_{ij} deg(i) -A_{ij}u_{j}(t))
+\frac{d}{dt}u_{i}(t) = -\kappa \sum_{j=1}^{N}(\delta_{ij} deg(i) -A_{ij})u_{j}(t)
 \]
 Which we can compact in to the vector matrix form (Where $D$ is the diagonal degree matrix):
 \[
 \frac{d}{dt}\underline{u}(t) = -\kappa\underbrace{(D -A)}_{L}\underline{u}(t)
 \]
-This gives us a first order linear system of differential equations (similar to the heat equation if $L = \nabla^{2}$). Due to basic properties of matrix algebra solving this equation is rather trivial. I will provide a run through solution given that we ignore initial conditions for simplicity.
+This gives us a first order linear system of differential equations (exact to the heat equation if $L = \nabla^{2}$). Due to basic properties of matrix algebra solving this equation is rather trivial. I will provide a run through solution given that we ignore initial conditions for simplicity.
 \[
 \frac{d}{dt}\underline{u}(t) = -\kappa L\underline{u}(t)
 \]
@@ -112,7 +112,99 @@ The cosine similarity measure for two vectors $\underline{v} $ and $\underline{u
 \[
 cos(\theta) = \frac{\underline{v}\cdot \underline{u}}{||\underline{v}|| \: ||\underline{u}||}
 \]
+<<<<<<< HEAD
 which just tells us how close two vectors are too each other. Now all we need to do this is transform our biographies in to vectors.
 Pseudocode:
 
+=======
+which just tells us how close two vectors are to each other. Now all we need to do this is transform our biographies in to vectors. In order to do this we check the words existing across all biographies and word frequency vector for each node relative to the corpus of biographies (tf-idf). Scikit learn provides us with a function to efficiently compute this. 
+\newline\newline
+Post to this
+we can calculate the cosine similarity measure in between vectors which gives us a measure of how similar to bios are for all bios in our node space.
+\newline\newline 
+Now all we require to do is decide how to use this similarity measure to join nodes together. To do so we will make the assumption that most people dont have too much in common (low similarity coefficient) and the ones that have a lot in common are very likely to know each other. In the next sub chapter I will motivate and outline the mathematics behind this.
+\subsection{Z-score Outlier test}
+This is one of the most used statistical tests which has been widely popularized in particle physics when discovering a new particle. The idea behind this term is that very extreme values are likely to validate to contradict some null hypothesis which validates our original hypothesis. In our case we are going to use it to detect nodes that do not belong to the set of nodes that do not know each other.
+\newline
+To this we assume that our cosine similarity measures are normally distributed which as we can see by plotting a histogram of them they seem to be so:
+\includegraphics[scale=0.422]{pics/hist2.png}
+As we can see the Gaussian fits rather nicely. The scale difference between the height of the Gaussian and histogram is due to the Gaussian being a pdf with a continuous range and thus its area elements are infinitesimally in $dx$ making it scale down.
+\newline
+Now given that our assumption seems reasonable we construct the following boolean test:
+\[
+(x_{\text{node pair coefficient}} - \mu) > 2\sigma
+\]
+
+Where: $$\mu = \frac{2}{N(N-1)}\sum_{x \in \text{node coefficients pairs} } x$$  $$\sigma = \frac{2}{N^(N-1)}\sum_{x \in \text{node coefficients pairs} } (x- \mu)^{2}$$
+What our boolean test tells us is that if a coefficient $x_{\text{node pair coefficient}}$ is away from the mean of our coefficient pair distribution by twice the standard deviation then it is 95\%  likely that this pair does not belong to this distribution of people that do not know each other and thus implying that they know each meaning that we construct an edge between the two nodes over which the coefficient was computed. This yields us graphs of the form:
+\hspace*{-2cm}
+\includegraphics[scale=0.2]{pics/spring.png}
+The colors are the result of our spectral clustering
+for k=3 which we will discuss in the next chapter.
+\section{Spectral Clustering}
+As we have motivated previously clustering nodes by their Laplacian eigen space representation is a suitable idea for finding cliques and groups that are likely to know each other since in this space the nodes take values which describe connectivity properties over which it is useful to cluster.
+\subsection{Algorithm Specification}
+In pseudocode we can describe our spectral clustering algorithm as:
+\begin{lstlisting}[mathescape]
+$\mathcal{A}_{spectralClust}:$
+$\textbf{Input } G(V,E), k$ for the number of clusters
+$\textbf{Ouput } ClusteredNodes$
+1.  L := Laplacian(G(V,E))
+2.  $\Lambda$ := eigenValues(L)
+3.  $V$ := eigenVectors(L) // $V's$ rows
+                         // are eigen vectors
+4.  $V$.sortInAscentBy($\Lambda$)
+5   $V$ := fisrt k rows in $V$
+6.  NodeKSpace := {}
+7.  for $\underline{n}_{k}$ $\in$ $V^{T}$: // Extracting rows from $V^T$
+8.       NodeKSpace := NodeKSpace $\cup$ {$\underline{n}_{k}$}
+9.  ClusteredNodes = kMeans(NodeKSpace, k)
+\end{lstlisting}
+
+Where we assume kMeans(NodeKSpace, k) to be a standard k-means clustering algorithm that returns points and the clusters they belong to in the same order as the input.  For k=2 in terms of eigen vectors 2 and 3 we get the following graph and cluster assignments:
+\includegraphics[scale=0.4]{pics/se.png}
+With k=3:
+
+\includegraphics[scale=0.4]{pics/s.png}
+\subsection{Picking the Number of Clusters}
+In order to pick the number of clusters we used
+the inter cluster aggregate  distance which is often used in machine learning to deal with this task:
+\[
+\sum_{c \in centroidSet} \sum_{\quad x \in c} D(x, c)^{2}
+\]
+Looking closely at this metric it gives us a sum of deviation distances about the centroid for each cluster. One can interpret it as an overall deviation metric as to how non dense (sparse) the clusters for a run of k-means are. Running this metric over different values of k ranging from 2 to 16 we get the following graph:
+\includegraphics[scale=0.4]{pics/m.png}
+We pick the number of clusters in such way to maxmise the the second derivative of this distance metric and by inspecting the graph we see the happens at 14 (the most accented change or the elbow looking pattern). We would normally expect this metric to go down with cluster number but since we increase the dimensionality of our nodes with k sparsity is also increased and thus making the metric go up.
+
+\section{Community Evolution}
+
+In this section we reach the end of our experiment
+and it is where we asses how the communities (clusters) evolve as we increase the radius size allowing more people in Tinder to come in to our graph from further away locations.
+
+\subsection{Dispersion of Radii}
+
+As we did before in the cluster number picking
+we will use the same metric to asses the density
+of the communities as we grow the radius. This tells us how density of our communities changes
+in space (radius). Which in a sense tells us how this aspect is evolving.
+\newline\newline
+We can explore our results (findings) by plotting the intra cluster aggregate distance vs the radii size (for our best cluster number 14):
+\includegraphics[scale=0.34]{pics/radii.png}
+
+As we can observe the density of the clusters
+seems to increase almost monotonically but then every now and then it experiences a decrease in density. 
+
+I believe the partial monotonic increase is due to certain communities increasing  in density but after 30km it may be the case that we are getting closer to Glasgow or other towns in which the interest are very different to Edinburgh (Edinburgh being a cosmopolitan and international student city) and thus the new incomers are all quite far away from all the communities in Edinburgh but after we let the radius increase beyond this point the increase happens again.
+
+
+I believe this increase is because these small isolated incomers are starting to form their own strong communities which shifts around the existing communities and may increase the densities of the new clusters.
+\section{Bibliography}
+\begin{enumerate}
+% \usepackage{hyperref}
+\item Einan Gardi , Dynamics \url{http://www2.ph.ed.ac.uk/~egardi/Dynamics/Dynamics_2014_lecture_12.pdf}
+\item  Yale, Introduction to the Laplacian \url{http://www.cs.yale.edu/homes/spielman/561/2009/lect02-09.pdf}
+\item V. Lavrenko, Clustering \url{http://www.inf.ed.ac.uk/teaching/courses/iaml/slides/kmeans-2x2.pdf}
+\item tf-idf \url{https://en.wikipedia.org/wiki/Tf%E2%80%93idf}
+\end{enumerate}
+>>>>>>> 32867654ed41fa74610d3b018911402f93b7e9a5
 \end{document}
