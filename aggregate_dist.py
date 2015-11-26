@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
         # for radial cluster
         if typ == 'r':
-            plt.plot([4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48, 52, 56, 60, 64],
+            plt.plot([4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64],
                      evaluate_kmeans_radial(g_dict, k), '-o')
             plt.show()
         # for cluster number picking

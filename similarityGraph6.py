@@ -173,6 +173,7 @@ def showEigenspace(G, V, k):
     """
     V = V.T[0:k, :]
     fig = plt.figure()
+    count = 0
     for i, v in enumerate(V):
         for j, u in enumerate(V):
 
