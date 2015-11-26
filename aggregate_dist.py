@@ -78,25 +78,28 @@ def evaluate_kmeans_clust_no(graph,k_min, k_max):
         final_result.append(agg_dist(n, c))
     return final_result
 
+def main(typ):
+    g_dict =  pickle.load(open("giganticData", "rb"))
+
+    # Best fond k was 14 second 3 .
+    k = 14
+
+    # for radial cluster evolution.
+    if typ == 'r':
+        plt.plot(range(4,65,4),
+                 evaluate_kmeans_radial(g_dict, k), '-o')
+        plt.xlabel("Radius(km)")
+        plt.ylabel("$\sum_{c \in centroids} \sum_{\quad x \in c} D(x, c)^{2}$")
+        plt.show()
+    # for cluster number picking
+    else:
+        for i in range(len(g_dict) - 6):
+            plt.plot(range(9,16),
+                     evaluate_kmeans_clust_no(g_dict.values()[i], 9, 16), '-o')
+        plt.xlabel("Cluster number")
+        plt.ylabel("$\sum_{c \in centroids} \sum_{\quad x \in c} D(x, c)^{2}$")
+        plt.show()
+
 if __name__ == "__main__":
-        typ = 'c'
-        g_dict =  pickle.load(open("giganticData", "rb"))
-
-        # Best fond k was 14 second 3 .
-        k = 14
-
-        # for radial cluster evolution.
-        if typ == 'r':
-            plt.plot(range(4,65,4),
-                     evaluate_kmeans_radial(g_dict, k), '-o')
-            plt.xlabel("Radius(km)")
-            plt.ylabel("$\sum_{c \in centroids} \sum_{\quad x \in c} D(x, c)^{2}$")
-            plt.show()
-        # for cluster number picking
-        else:
-            for i in range(len(g_dict) - 6):
-                plt.plot(range(2,16),
-                         evaluate_kmeans_clust_no(g_dict.values()[i], 2, 16), '-o')
-            plt.xlabel("Cluster number")
-            plt.ylabel("$\sum_{c \in centroids} \sum_{\quad x \in c} D(x, c)^{2}$")
-            plt.show()
+        typ = 'r'
+        main(typ)

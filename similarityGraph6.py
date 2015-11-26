@@ -16,7 +16,7 @@ gaussian = lambda x, mu, sig: (
     np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))) / (np.sqrt(2*np.pi) * sig)
 
 
-def buildGraph(pickl):
+def buildGraph(pickl, his=False):
     """
     This method used the cosine similarity measure and the
     basic z-score gaussian outlier test in order to determine
@@ -65,20 +65,20 @@ def buildGraph(pickl):
 
     mu = np.mean(data)
     std = np.std(data)
-
     binwidth = 0.007
-    plt.subplot(1, 2, 0)
-    plt.hist(data, bins=np.arange(min(data), max(data) + binwidth, binwidth))
-    # PLot gaussian fit contrast
-    plt.xlabel("$cos(\\theta)$")
-    plt.ylabel("frecuency count of $cos(\\theta)$ values")
-    plt.subplot(1, 2, 1)
-    plt.plot(np.arange(0, max(data), 0.001),
-             gaussian(np.arange(0, max(data), 0.001), mu, std),
-             linewidth=2)
-    plt.xlabel("$cos(\\theta)$")
-    plt.ylabel("fitted gaussian")
-    plt.show()
+    if his:
+        plt.subplot(1, 2, 0)
+        plt.hist(data, bins=np.arange(min(data), max(data) + binwidth, binwidth))
+        # PLot gaussian fit contrast
+        plt.xlabel("$cos(\\theta)$")
+        plt.ylabel("frecuency count of $cos(\\theta)$ values")
+        plt.subplot(1, 2, 1)
+        plt.plot(np.arange(0, max(data), 0.001),
+                 gaussian(np.arange(0, max(data), 0.001), mu, std),
+                 linewidth=2)
+        plt.xlabel("$cos(\\theta)$")
+        plt.ylabel("fitted gaussian")
+        plt.show()
 
     # Edge creation !
     for key in dic3:
@@ -142,6 +142,8 @@ def splitGraph(graph, results):
 def communityGraph(graph):
     """
     Median method of community detection
+    also used just to obtain laplacian data
+    for specKMeans
     """
 
     lapgr = nx.laplacian_matrix(graph)
@@ -207,8 +209,11 @@ def specKMeans(graph, evec, k):
     return y_pred, nodeCluster, centroids
 
 
-def construct(pickl, startVector, endVector):
-    graph = buildGraph(pickl)
+def construct(pickl, startVector, endVector, d='h'):
+    his = False
+    if d=='h':
+        his=True
+    graph = buildGraph(pickl, his)
 
     results, evals, evec = communityGraph(graph)
     kmeans, cluster, centroids = specKMeans(graph, evec, 3)
@@ -222,21 +227,8 @@ def construct(pickl, startVector, endVector):
 
     emb = embed_nodes(graph, evec[:, startVector].ravel().tolist()[
                       0], evec[:, endVector].ravel().tolist()[0])
-
-    showEigenspace(graph, evec, 5)
-    '''
-    nodelist1 = []
-    nodelist2=[]
-    i=0
-    for key in graph:
-        if(results[i]==0):
-            nodelist1.append(key)
-        else:
-            nodelist2.append(key)
-        i += 1
-    ## "Nodelist", nodelist1
-    ## "Second nodelist", nodelist2
-    '''
+    if d == 'e':
+        showEigenspace(graph, evec, 5)
 
     i = 0
     for node in graph.nodes():
@@ -244,38 +236,23 @@ def construct(pickl, startVector, endVector):
         i += 1
     color_map = {0: 'b', 1: 'r', 2: 'y', 3: 'g'}
 
-    nx.draw_spring(graph, node_color=[color_map[graph.node[node]['category']] for node in graph])
-    plt.show()
-    nx.draw_networkx(graph, pos=emb, node_size=100, with_labels=False, node_color=[
-                     color_map[graph.node[node]['category']] for node in graph])
-    plt.xlabel("second eigen vector")
-    plt.ylabel("third eigen vector")
-    plt.show()
-    '''
-    nx.draw_networkx_nodes(graph,pos = emb,
-                       nodelist=nodelist1,
-                       node_color='r')
-                      
-    nx.draw_networkx_nodes(graph,pos=emb,
-                       nodelist=nodelist2,
-                       node_color='b')
-    '''
-    # nx.draw_networkx_edges(graph,pos=emb,width=1.0,alpha=0.5)
+    if d=='s':
+        nx.draw_spring(graph, node_color=[color_map[graph.node[node]['category']] for node in graph])
+        plt.show()
+    if d=='c':
+        nx.draw_networkx(graph, pos=emb, node_size=100, with_labels=False, node_color=[
+                         color_map[graph.node[node]['category']] for node in graph])
+        plt.xlabel("second eigen vector")
+        plt.ylabel("third eigen vector")
+        plt.show()
+
     return centroids, franVectors
 
 
 def fran(startVector, endVector):
     pickl = pickle.load(open("BiodictData/biodictdist4.pickle", "rb"))
     centr1, franVectors1 = construct(pickl, startVector, endVector)
-    pickl = pickle.load(open("BiodictData/biodictdist8.pickle", "rb"))
-    centr2, franVectors2 = construct(pickl, startVector, endVector)
-    centr = list()
-    franVectors = list()
-    centr.append(centr1)
-    centr.append(centr2)
-    franVectors.append(franVectors1)
-    franVectors.append(franVectors2)
-    return centr, franVectors
+
 
 
 if __name__ == '__main__':
@@ -286,7 +263,8 @@ if __name__ == '__main__':
     pickl = pickle.load( open( "biodictdist8.pickle", "rb" ) )
     centr2 = construct(pickl)
     '''
-    centr, franVectors = fran(1, 2)
+    pickl = pickle.load(open("BiodictData/biodictdist4.pickle", "rb"))
+    construct(pickl, 1, 2, 'e')
     # # "Centroids" , centr
     # # "Vectors", franVectors
     # "time"
