@@ -270,18 +270,23 @@ def construct(pickl,startVector, endVector):
                        node_color='b')
     '''
     #nx.draw_networkx_edges(graph,pos=emb,width=1.0,alpha=0.5)
-    return centroids, franVectors
+    return centroids, franVectors, graph
 def fran(startVector, endVector):
     pickl = pickle.load( open( "biodictdist4.pickle", "rb" ) )
-    centr1, franVectors1 = construct(pickl, startVector, endVector)
+    centr1, franVectors1, graphdist4 = construct(pickl, startVector, endVector)
     pickl = pickle.load( open( "biodictdist8.pickle", "rb" ) )
-    centr2, franVectors2 = construct(pickl, startVector, endVector)
+    centr2, franVectors2, graphdist8 = construct(pickl, startVector, endVector)
     centr = list()
     franVectors = list()
     centr.append(centr1)
     centr.append(centr2)
     franVectors.append(franVectors1)
     franVectors.append(franVectors2)
+    bigData = dict()
+    bigData['graphdist4'] = graphdist4
+    bigData['graphdist8'] = graphdist8
+    with open('bigData', 'wb') as handle:
+        pickle.dump(bigData, handle)
     return centr, franVectors
     
 
