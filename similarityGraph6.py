@@ -268,15 +268,3 @@ if __name__ == '__main__':
     pickl = pickle.load(open("BiodictData/biodictdist4.pickle", "rb"))
     construct(pickl, 1, 2, 'c')
     # # "Centroids" , centr
-    # # "Vectors", franVectors
-    # "time"
-    # agg_dist(franVectors, centr)
-    '''
-    centroids = list()
-    dist = list()
-    for i in xrange(k):
-        for j in xrange(k):
-            dist.append( np.linalg.norm(centr1[j]-centr2[j]))
-        centroids.append( min(dist))
-    # centroids
-    '''
