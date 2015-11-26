@@ -244,8 +244,8 @@ def construct(pickl, startVector, endVector):
         i += 1
     color_map = {0: 'b', 1: 'r', 2: 'y', 3: 'g'}
 
-    #nx.draw(graph, node_color=[color_map[graph.node[node]['category']] for node in graph])
-
+    nx.draw_spring(graph, node_color=[color_map[graph.node[node]['category']] for node in graph])
+    plt.show()
     nx.draw_networkx(graph, pos=emb, node_size=100, with_labels=False, node_color=[
                      color_map[graph.node[node]['category']] for node in graph])
     plt.xlabel("second eigen vector")

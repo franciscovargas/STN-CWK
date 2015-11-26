@@ -79,21 +79,24 @@ def evaluate_kmeans_clust_no(graph,k_min, k_max):
     return final_result
 
 if __name__ == "__main__":
-        typ = 'r'
+        typ = 'c'
         g_dict =  pickle.load(open("giganticData", "rb"))
 
-        # Best fond k was 10 second was 12.
-        k = 10
+        # Best fond k was 14 second 3 .
+        k = 14
 
-        # for radial cluster
+        # for radial cluster evolution.
         if typ == 'r':
-            plt.plot([4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64],
+            plt.plot(range(4,65,4),
                      evaluate_kmeans_radial(g_dict, k), '-o')
+            plt.xlabel("Radius(km)")
+            plt.ylabel("$\sum_{c \in centroids} \sum_{\quad x \in c} D(x, c)^{2}$")
             plt.show()
         # for cluster number picking
         else:
             for i in range(len(g_dict) - 6):
-                print i
                 plt.plot(range(2,16),
                          evaluate_kmeans_clust_no(g_dict.values()[i], 2, 16), '-o')
-                plt.show()
+            plt.xlabel("Cluster number")
+            plt.ylabel("$\sum_{c \in centroids} \sum_{\quad x \in c} D(x, c)^{2}$")
+            plt.show()
