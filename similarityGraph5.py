@@ -11,7 +11,7 @@ from numpy import linalg as LA
 
 from sklearn.cluster import KMeans
 
-from aggregate_dist import agg_dist
+# from aggregate_dist import agg_dist
 
 def buildGraph(pickl):
     dic = pickl
@@ -19,10 +19,11 @@ def buildGraph(pickl):
     dic1 = dic
     G=nx.Graph()
     dic3 = dict(dic)
-
+    checked = []
     
     for key in dic:
         if((re.sub("[ ]+", "", dic[key])!="") and len(dic[key]) ) > 30:
+            # if(dic[key] not in checked ):
             G.add_node(key)
         else:
             del dic3[key]
@@ -37,13 +38,14 @@ def buildGraph(pickl):
     joint_dict = dict()
     dica = dict(dic3)
     dicb = dict(dic1)
-    for key in dic3:
-        for key1 in dic1:
-            if(key!=key1):
-                # # "Person: ", dic[key]
-                # # "Person: ", dic1[key1]
-                tfidf = vect.fit_transform([(dic[key]),(dic1[key1])])
-                tfidf =(tfidf * tfidf.T).A[0,1]
+    # Cosine similarity measure matrix
+    F = vect.fit_transform(dic3.values())
+    Cosine_mat = (F*F.T).A
+    for i, key in enumerate(dic3):
+        for j, key1 in enumerate(dic1):
+            if(i > j):
+
+                tfidf =Cosine_mat[i,j]
                 if dic[key]== dic[key1]:
 
                     continue
@@ -55,6 +57,7 @@ def buildGraph(pickl):
     
     
     # plt.hist(coefs)
+    # plt.show()
     data = [c  for c in coefs if c != 0 ]
     ## max(data)
     
@@ -63,8 +66,8 @@ def buildGraph(pickl):
     ## mu
     ## std
     binwidth = 0.007
-    #plt.hist(data, bins=np.arange(min(data), max(data) + binwidth, binwidth))
-    #plt.show()
+    plt.hist(data, bins=np.arange(min(data), max(data) + binwidth, binwidth))
+    plt.show()
 
     
     for key in dic3:
