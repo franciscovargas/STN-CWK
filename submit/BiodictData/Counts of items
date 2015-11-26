@@ -1,0 +1,6 @@
+The first pickle file includes people who are (stricktly) less than 4 km away. The second is for people less than 8km away and so on. 
+Dist4 1079
+Dist8 1271
+Dist16 1495
+Dist32 1706
+Dist64 1922
