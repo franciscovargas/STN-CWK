@@ -163,7 +163,11 @@ $\textbf{Ouput } ClusteredNodes$
 9.  ClusteredNodes = kMeans(NodeKSpace, k)
 \end{lstlisting}
 
-Where we assume kMeans(NodeKSpace, k) to be a standard k-means clustering algorithm that returns points and the clusters they belong to in the same order as the input. 
+Where we assume kMeans(NodeKSpace, k) to be a standard k-means clustering algorithm that returns points and the clusters they belong to in the same order as the input.  For k=2 in terms of eigen vectors 2 and 3 we get the following graph and cluster assignments:
+\includegraphics[scale=0.4]{pics/se.png}
+With k=3:
+
+\includegraphics[scale=0.4]{pics/s.png}
 \subsection{Picking the Number of Clusters}
 In order to pick the number of clusters we used
 the inter cluster aggregate  distance which is oftenly used in machine learning to deal with this task:
@@ -173,4 +177,19 @@ the inter cluster aggregate  distance which is oftenly used in machine learning 
 Looking closely at this metric it gives us a sum of deviation distances about the centroid for each cluster. One can interpret it as an overall deviation metric as to how non dense (sparse) the clusters for a run of k-means are. Running this metric over different values of k ranging from 2 to 16 we get the following graph:
 \includegraphics[scale=0.4]{pics/m.png}
 We pick the number of clusters in such way to maxmise the the second derivative of this distance metric and by inspecting the graph we see the happens at 14 (the most accented change or the elbow looking pattern).
+
+\section{Community Evolution}
+
+In this section we reach the end of our experiment
+and it is where we asses how the communities (clusters) evolve as we increase the radius size allowing more people in Tinder to come in to our graph from further away locations.
+
+\subsection{Dispersion of Radii}
+
+As we did before in the cluster number picking
+we will use the same metric to asses the density
+of the communities as we grow the radius. This tells us how density of our communities changes
+in space (radius). Which in a sense tells us how this aspect is evolving.
+\newline\newline
+We can explore our results (findings) by plotting the intra cluster aggregate distance vs the radii size (for our best cluster number 14):
+\includegraphics[scale=0.4]{pics/radii.png}
 \end{document}

@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1448522057 "stn_fran.tex" "stn_fran.pdf" "stn_fran" 1448522058
+["pdflatex"] 1448525625 "stn_fran.tex" "stn_fran.pdf" "stn_fran" 1448525626
   "/etc/texmf/web2c/texmf.cnf" 1407925340 1101 af7716885e081ab43982cab7b4672c1a ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -90,9 +90,12 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1407925418 3823577 657220ba9041d6eab6313bc8f5e5bdb5 ""
   "pics/hist2.png" 1448515476 26511 2e8431d6287c9fa3aefefe47186a4187 ""
   "pics/m.png" 1448521957 69838 2297e770f5c94e76f42277cdc4c022ed ""
+  "pics/radii.png" 1448525598 34126 32cca5a4234d6a7856ec335892811ac6 ""
+  "pics/s.png" 1448525268 29929 6d860d23e961457f980e53d4081a4615 ""
+  "pics/se.png" 1448525069 29792 9ea6facd8e48b955c9f84836087a415c ""
   "pics/spring.png" 1448517463 418754 9981990e290b46e6308da1e960f672f0 ""
-  "stn_fran.aux" 1448522058 769 bc001a58bc4153419e51fa71ec68c628 ""
-  "stn_fran.tex" 1448522057 12150 628c674d122c05f0d1014c60bde65a8e ""
+  "stn_fran.aux" 1448525626 936 995423b4b239d5d79dab0aee6d6e24a4 ""
+  "stn_fran.tex" 1448525624 13097 c75c260c7f48625db98de78d815797fe ""
   (generated)
   "stn_fran.pdf"
   "stn_fran.log"

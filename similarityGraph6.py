@@ -216,6 +216,8 @@ def construct(pickl, startVector, endVector, d='h'):
     graph = buildGraph(pickl, his)
 
     results, evals, evec = communityGraph(graph)
+    # Hardcoded cluster number change third param to yield
+    # more clusters
     kmeans, cluster, centroids = specKMeans(graph, evec, 3)
 
     #first, second = splitGraph(graph,results)
@@ -264,7 +266,7 @@ if __name__ == '__main__':
     centr2 = construct(pickl)
     '''
     pickl = pickle.load(open("BiodictData/biodictdist4.pickle", "rb"))
-    construct(pickl, 1, 2, 'e')
+    construct(pickl, 1, 2, 'c')
     # # "Centroids" , centr
     # # "Vectors", franVectors
     # "time"

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.8.13)  26 NOV 2015 07:14
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.8.13)  26 NOV 2015 08:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -392,44 +392,113 @@ Overfull \hbox (22.26733pt too wide) in paragraph at lines 163--164
 [][][][][][][][][][][][][][][][][] 
  []
 
-<pics/m.png, id=25, 612.1269pt x 433.62pt>
-File: pics/m.png Graphic file (type png)
- <use pics/m.png>
-Package pdftex.def Info: pics/m.png used on input line 174.
-(pdftex.def)             Requested size: 244.84642pt x 173.44492pt.
+<pics/se.png, id=25, 578.16pt x 433.62pt>
+File: pics/se.png Graphic file (type png)
+ <use pics/se.png>
+Package pdftex.def Info: pics/se.png used on input line 167.
+(pdftex.def)             Requested size: 231.2599pt x 173.44492pt.
 
-Overfull \hbox (15.11119pt too wide) in paragraph at lines 172--176
+Underfull \hbox (badness 7869) in paragraph at lines 166--169
+[]\OT1/cmr/m/n/10 Where we as-sume kMeans(NodeKSpace, k)
+ []
+
+
+Underfull \hbox (badness 1902) in paragraph at lines 166--169
+\OT1/cmr/m/n/10 to be a stan-dard k-means clus-ter-ing al-go-rithm
+ []
+
+
+Underfull \hbox (badness 2564) in paragraph at lines 166--169
+\OT1/cmr/m/n/10 that re-turns points and the clus-ters they be-
+ []
+
+
+Underfull \hbox (badness 1122) in paragraph at lines 166--169
+\OT1/cmr/m/n/10 long to in the same or-der as the in-put. For
+ []
+
+
+Underfull \hbox (badness 7576) in paragraph at lines 166--169
+\OT1/cmr/m/n/10 the fol-low-ing graph and clus-ter as-sign-ments:
+ []
+
+
+Overfull \hbox (1.52467pt too wide) in paragraph at lines 166--169
 []
  []
 
-[3 <./pics/spring.png> <./pics/m.png>] [4
+<pics/s.png, id=26, 578.16pt x 433.62pt>
+File: pics/s.png Graphic file (type png)
+ <use pics/s.png>
+Package pdftex.def Info: pics/s.png used on input line 170.
+(pdftex.def)             Requested size: 231.2599pt x 173.44492pt.
 
-] (./stn_fran.aux) ) 
+Overfull \hbox (11.52469pt too wide) in paragraph at lines 170--171
+[][] 
+ []
+
+[3 <./pics/spring.png> <./pics/se.png> <./pics/s.png>]
+<pics/m.png, id=34, 612.1269pt x 433.62pt>
+File: pics/m.png Graphic file (type png)
+ <use pics/m.png>
+Package pdftex.def Info: pics/m.png used on input line 178.
+(pdftex.def)             Requested size: 244.84642pt x 173.44492pt.
+
+Overfull \hbox (15.11119pt too wide) in paragraph at lines 176--180
+[]
+ []
+
+<pics/radii.png, id=35, 578.16pt x 433.62pt>
+File: pics/radii.png Graphic file (type png)
+ <use pics/radii.png>
+Package pdftex.def Info: pics/radii.png used on input line 194.
+(pdftex.def)             Requested size: 231.2599pt x 173.44492pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--195
+
+ []
+
+
+Underfull \hbox (badness 1748) in paragraph at lines 188--195
+\OT1/cmr/m/n/10 We can ex-plore our re-sults (find-ings) by plot-
+ []
+
+
+Underfull \hbox (badness 7540) in paragraph at lines 188--195
+\OT1/cmr/m/n/10 ting the in-tra clus-ter ag-gre-gate dis-tance vs
+ []
+
+
+Overfull \hbox (1.52467pt too wide) in paragraph at lines 188--195
+[] 
+ []
+
+[4 <./pics/m.png> <./pics/radii.png>] (./stn_fran.aux) ) 
 Here is how much of TeX's memory you used:
- 5685 strings out of 493307
- 83185 string characters out of 6139905
- 159465 words of memory out of 5000000
- 9056 multiletter control sequences out of 15000+600000
+ 5700 strings out of 493307
+ 83402 string characters out of 6139905
+ 158465 words of memory out of 5000000
+ 9068 multiletter control sequences out of 15000+600000
  12122 words of font info for 47 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  42i,9n,40p,1171b,1112s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmb
-x12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/s
-ymbols/msbm10.pfb>
-Output written on stn_fran.pdf (4 pages, 556563 bytes).
+</usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on stn_fran.pdf (4 pages, 633206 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
+ 82 PDF objects out of 1000 (max. 8388607)
  50 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
