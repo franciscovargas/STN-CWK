@@ -11,6 +11,8 @@ from numpy import linalg as LA
 
 from sklearn.cluster import KMeans
 
+from aggregate_dist import agg_dist
+
 def buildGraph(pickl):
     dic = pickl
     
@@ -24,7 +26,7 @@ def buildGraph(pickl):
             G.add_node(key)
         else:
             del dic3[key]
-    #print len(G.nodes())
+    ## len(G.nodes())
     
     dic1 = dic3
     
@@ -38,8 +40,8 @@ def buildGraph(pickl):
     for key in dic3:
         for key1 in dic1:
             if(key!=key1):
-                # print "Person: ", dic[key]
-                # print "Person: ", dic1[key1]
+                # # "Person: ", dic[key]
+                # # "Person: ", dic1[key1]
                 tfidf = vect.fit_transform([(dic[key]),(dic1[key1])])
                 tfidf =(tfidf * tfidf.T).A[0,1]
                 if dic[key]== dic[key1]:
@@ -54,12 +56,12 @@ def buildGraph(pickl):
     
     # plt.hist(coefs)
     data = [c  for c in coefs if c != 0 ]
-    #print max(data)
+    ## max(data)
     
     mu = np.mean([c for c in coefs if c != 0])
     std = np.std([c for c in coefs if c != 0])
-    #print mu
-    #print std
+    ## mu
+    ## std
     binwidth = 0.007
     #plt.hist(data, bins=np.arange(min(data), max(data) + binwidth, binwidth))
     #plt.show()
@@ -71,13 +73,15 @@ def buildGraph(pickl):
                 try:
                     x = joint_dict[str(key) + str(key1)]
                     if x == 1.0:
-                        print "goes in", x
+                        # "goes in", x
+                        pass
                     prob = random.random()
                     if( x - mu > 2* std ):
                         G.add_edge(key,key1)
                 except:
                     pass
-                    
+
+    # Return the conected component with largest cardinality of nodes 
     G = max(nx.connected_component_subgraphs(G),key=len)
     return G
 
@@ -88,7 +92,7 @@ def laplacianMatrix(graph):
     A = A.todense()
     degree = 0
     degreeVector = []
-    #print (A)
+    ## (A)
 
     for i in range(0,(len(A))):
 
@@ -107,12 +111,12 @@ def laplacianMatrix(graph):
     
     identity = np.identity(len(A))
     degreeMatrix = identity*degreeVector
-    #print degreeMatrix
+    ## degreeMatrix
 
 
-    #print A 
+    ## A 
     normA = degreeMatrix*A*degreeMatrix
-    #print normA
+    ## normA
 
     eigVal,eigVectors = eigs(normA, 2,  which='LM')
     #Val,Vec = LA.eig(A)
@@ -129,7 +133,7 @@ def splitGraph(graph, results):
         else:
             graphChange2.add_node(node)
         i +=1
-    #print graphChange2.nodes()
+    ## graphChange2.nodes()
     flag=0
     flagd = 0
     for item in graph.edges():
@@ -155,26 +159,29 @@ def splitGraph(graph, results):
         if flagd == 2:
             graphChange2.add_edge(item[0],item[1])
         flagd = 0
-    #print graphChange2.edges()
-    #print graph.edges()
+    ## graphChange2.edges()
+    ## graph.edges()
     return graphChange1, graphChange2
                    
 
 
 def communityGraph(graph):
+    """
+    Median method of community detection
+    """
     
     lapgr = nx.laplacian_matrix(graph)
-    print lapgr.T == lapgr
+    # lapgr.T == lapgr
 
     evals,evec = np.linalg.eigh(lapgr.todense()) #Get the eigenvalues and eigenvectors of the Laplacian matrix
-    print "Value", evals
-    print "Vector", evec
-    #print evals[2]==evals[3]
-    #print list(graph.degree().values())
+    # "Value", evals
+    # "Vector", evec
+    ## evals[2]==evals[3]
+    ## list(graph.degree().values())
 
     fiedler = evec[1]
     results =[]
-    #print "Fiedler", fiedler
+    ## "Fiedler", fiedler
     median = np.median(fiedler, axis=1) #median of the second eigenvalue
     for i in range (0,fiedler.size):    #divide the graph nodes into two
         if(fiedler[0,i]<median):
@@ -187,14 +194,19 @@ def embed_nodes(g, x, y):
     return dict((g.nodes()[i], (x[i],y[i])) for i in range(len(g.nodes())))  
 
 def showEigenspace(G, V,k ):
+    """
+    This method projects our graph G in to a sub
+    eigen living in R^k , Mostly used for visualization
+    purposes
+    """
     V = V.T[0:k,:]
     fig = plt.figure()
     #fif, axarr = plt.subplots(len(V), len(V))
     count =0 
     for i, v in enumerate(V):
         for j, u in enumerate(V):
-            #print len(v)
-            #print len(u)
+            ## len(v)
+            ## len(u)
             emb = embed_nodes(G,v.ravel().tolist()[0],u.ravel().tolist()[0])
             plt.subplot(k,k, count)
             nx.draw_networkx_nodes(G, pos=emb, node_size=50, with_labels=False, node_color=G.degree().values(), cmap= plt.get_cmap('gray'))
@@ -206,11 +218,11 @@ def showEigenspace(G, V,k ):
 def specKMeans(graph,evec, k):
     nodeCluster = dict()
     evec = evec.T[1:k+1,:]
-    #print evec.shape
+    ## evec.shape
     kmeans = KMeans(n_clusters=k)
     y_pred = kmeans.fit_predict(evec.T)
     centroids = kmeans.cluster_centers_
-    print "Centroids", centroids
+    # "Centroids", centroids
     i=0
     for node in graph:
         nodeCluster[node] = y_pred[i]
@@ -223,7 +235,6 @@ def construct(pickl,startVector, endVector):
         
     results, evals, evec = communityGraph(graph)
     kmeans, cluster, centroids = specKMeans(graph, evec, 2)
-    print evec
     
     #first, second = splitGraph(graph,results)
     franVectors = list()
@@ -245,8 +256,8 @@ def construct(pickl,startVector, endVector):
         else:
             nodelist2.append(key)
         i += 1
-    #print "Nodelist", nodelist1
-    #print "Second nodelist", nodelist2
+    ## "Nodelist", nodelist1
+    ## "Second nodelist", nodelist2
     '''
 
     
@@ -272,10 +283,17 @@ def construct(pickl,startVector, endVector):
     #nx.draw_networkx_edges(graph,pos=emb,width=1.0,alpha=0.5)
     return centroids, franVectors, graph
 def fran(startVector, endVector):
+<<<<<<< HEAD
     pickl = pickle.load( open( "biodictdist4.pickle", "rb" ) )
     centr1, franVectors1, graphdist4 = construct(pickl, startVector, endVector)
     pickl = pickle.load( open( "biodictdist8.pickle", "rb" ) )
     centr2, franVectors2, graphdist8 = construct(pickl, startVector, endVector)
+=======
+    pickl = pickle.load( open( "BiodictData/biodictdist4.pickle", "rb" ) )
+    centr1, franVectors1 = construct(pickl, startVector, endVector)
+    pickl = pickle.load( open( "BiodictData/biodictdist8.pickle", "rb" ) )
+    centr2, franVectors2 = construct(pickl, startVector, endVector)
+>>>>>>> 19a97d02ee5a25b63039d3af081d22adff875648
     centr = list()
     franVectors = list()
     centr.append(centr1)
@@ -299,8 +317,10 @@ if __name__ == '__main__':
     centr2 = construct(pickl)
     '''
     centr, franVectors = fran(1,2) 
-    print "Centroids" , centr
-    print "Vectors", franVectors
+    # # "Centroids" , centr
+    # # "Vectors", franVectors
+    # "time"
+    # agg_dist(franVectors, centr)
     '''
     centroids = list()
     dist = list()
@@ -308,7 +328,7 @@ if __name__ == '__main__':
         for j in xrange(k):
             dist.append( np.linalg.norm(centr1[j]-centr2[j]))
         centroids.append( min(dist))
-    print centroids
+    # centroids
     '''
     
     

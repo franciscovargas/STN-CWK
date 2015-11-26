@@ -1,0 +1,116 @@
+\documentclass[10pt,twocolumn]{article}                                                                           
+\renewcommand{\baselinestretch}{1.05}                                                                   
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx,listings,mathtools}                
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}                                                          
+\usepackage{graphics}                                                                                   
+\usepackage{color}                                                                                      
+\definecolor{mygreen}{rgb}{0,0.6,0}                                                                     
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\topmargin0.0cm
+\headheight0.0cm
+\headsep0.0cm
+\oddsidemargin0.0cm
+\textheight23.0cm
+\textwidth16.5cm
+\footskip1.0cm
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}} 
+% \addtolength{\topmargin}{-1.0in}
+\usepackage{ marvosym }
+\usepackage{subcaption}
+\usepackage{amsmath} 
+
+
+% something NOT relevant to the usage of the package.
+
+
+ \begin{document}
+ % $insert math here$ and \[inset math here \] represent the math environment
+ % within the math environment we have:
+        % \; - a thick space
+        % \: - a medium space
+        % \, - a thin space
+        % \! - a negative thin space
+ % indentation only holds within listings.
+\title{Spectral Clustering on Similarity Based networks}
+\author{s1235260}
+\maketitle 
+
+
+
+
+\section{Abstract}
+The aim of this mini project is to study the evolution of interest based spacial communitites by exploiting the properties of the Laplacian matrix of a graph to carry out spectral clustering on communities with growing radii.
+\newline
+
+ To test these methods we will use real data extracted from the popular dating app Tinder which allows us to collect nodes (people) within a certain radius in addition to biographies which we will use to create edges in between people to symbolize that they may know each other.
+\newline
+% \newline
+All together we will be using methods from machine learning (unsupervised), spectral graph theory and classical dynamics.
+
+\section{Physical Motivation}
+In this section I aim to motivate the use of eigen vectors in spectral community detection by
+taking of from interpreting the laplacian as the second derivative operator $(\nabla \cdot \nabla) = \nabla^{2}$ :
+
+First lets start of with a vector $\underline{u}(t)$
+where each component $u_{i}(t)$ represents the amount of energy or heat in a node. Additionaly we allow edges to permit heat flow in between nodes thus if one attempts to model the evolution of the system (of $N$ nodes) with respect to determine the rate of $u_{i}(t)$  as the following:
+\[
+\frac{d}{dt}u_{i}(t) = -\kappa \sum_{j=1}^{N}A_{ij}(u_{i}(t) -u_{j}(t))
+\]
+Where :
+
+\[ A_{ij} = \begin{cases} 
+   1 \quad when \; i \text{ is coneccted to } j \\
+   0 \quad otherwise 
+   \end{cases}
+\]
+
+Distributing the sum operator:
+
+\[
+\frac{d}{dt}u_{i}(t) = -\kappa \left( u_{i}(t) \sum_{j=1}^{N}A_{ij}-  \sum_{j=1}^{N}A_{ij}u_{j}(t) \right )
+\]
+We know that if we sum up row 1 in matrix $A$ we find out the number of nodes incident on node 1 which we define as the degree of node 1. Generlazing this to $i$ follows trivially:
+
+\[
+\frac{d}{dt}u_{i}(t) = -\kappa \left( u_{i}(t) deg(i)-  \sum_{j=1}^{N}A_{ij}u_{j}(t) \right )
+\]
+
+Since $A_{ii}=0$  (A node connected to itself is trivial in our system and thus it is not accounted/allowed) we can use the kronecker delta symbol to rewrite this more compactly:
+
+\[ \delta_{ij} = \begin{cases} 
+   1 \quad when \; i = j \\
+   0 \quad otherwise 
+   \end{cases}
+\]
+
+\[
+\frac{d}{dt}u_{i}(t) = -\kappa \sum_{j=1}^{N}(\delta_{ij} deg(i) -A_{ij}u_{j}(t))
+\]
+Which we can compact in to the vector matrix form (Where $D$ is the diagonal degree matrix):
+\[
+\frac{d}{dt}\underline{u}(t) = -\kappa\underbrace{(D -A)}_{L}\underline{u}(t)
+\]
+This gives us a first order linear system of differential equations (similar to the heat equation if $L = \nabla^{2}$). Due to basic properties of matrix algebra solving this equation is rather trivial. I will provide a run through solution given that we ignore initial conditions for simplicity.
+\[
+\frac{d}{dt}\underline{u}(t) = -\kappa L\underline{u}(t)
+\]
+Lets guess the following ansazt to this ODE (common method in physics) as $\underline{v}e^{-\kappa\lambda t}$ where $\underline{v}$ is some constant vector. Plugging in to the heat equation (and cancelling out equal terms) we now have:
+
+\[
+ \lambda \underline{v} = L \underline{v}
+\]
+
+Which we recognize as a typical eigen value eigen vector equation. Which we can solve easily but the important thing I would like to comment on is what the solution means about our system. The different eigenvalues $\lambda$ (also known as the spectrum of $L$) desribe how every different solution (mode) to our heat equation changes dynamically since our solutions are of the form :  $\underline{v}_{i}e^{-\kappa\lambda_{i} t}, \quad i \in N$ so bigger lambdas may imply that our system is experiencing a decaying transfer of energy in time the eigen vector itself also tells us about the dynamics of the energy transfer since each of its component represents a node and in contrast to the others it tells us how the coupled system is simultaneously transfering energy (i.e. One node giving the other loosing , energy transfer in synch etc..). Thus in a sense the eigen vectors by describing the different possible dynamics of energy transfer in the system tell us different things about connectivity in the graph and thus can  help us find elements that may be clique like meaning that they all like to be conected to each other like a clique of friends.
+
+\section{Graph Construction}
+The first step is to construct a graph $G_{Tinder}(V,E)$ over which we will be using our spectral methods to study how communities evolve. In order to connect two people together we look at their biographies and based on a similarity measure which will be developed in this chapter we decide if they know each other or not. 
+\subsection{How Tinder Works}
+Tinder is a mobile phone app which randomly pulls out people near by you (you define how near) and you swipe left or right depending if you like them or not. Most people include biographies and we also know the distance they are from you. So in this setting our phones are the origin of the ball of radius. Luckily for us we dont have to swipe since tinder has an API that allows us to  pull out as many people as we want using a simple python wrapper.
+\subsection{Cosine Similarity Measure}
+The cosine similarity measure for two vectors $\underline{v} $ and $\underline{u}$ (s.t. $\underline{v}, \underline{u} \in \mathbb{R}^{n}$) is defined as the following:
+\[
+cos(\theta) = \frac{\underline{v}\cdot \underline{u}}{||\underline{v}|| \: ||\underline{u}||}
+\]
+which just tells us how close two vectors are too each other. Now all we need to do this is transform our biographies in to vectors.
+\end{document}
