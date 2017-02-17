@@ -1,7 +1,7 @@
 import numpy as np
 from itertools import chain
 import pickle
-import similarityGraph5 as sg
+import similarityGraph6 as sg
 import matplotlib.pyplot as plt
 
 def agg_dist(clusters, centroids):

@@ -258,13 +258,7 @@ def fran(startVector, endVector):
 
 
 if __name__ == '__main__':
-    k = 2
-    '''
-    pickl = pickle.load( open( "biodictdist4.pickle", "rb" ) )
-    centr1 = construct(pickl)
-    pickl = pickle.load( open( "biodictdist8.pickle", "rb" ) )
-    centr2 = construct(pickl)
-    '''
+
     pickl = pickle.load(open("BiodictData/biodictdist4.pickle", "rb"))
     construct(pickl, 1, 2, 'c')
     # # "Centroids" , centr
