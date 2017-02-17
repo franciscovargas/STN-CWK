@@ -35,9 +35,8 @@ dictionary60 = {}
 dictionary64 = {}
 
 
-fb_id = '10201344031560006'
-fb_auth_token = 'CAAGm0PX4ZCpsBAGGerZCVFzolZCQbSZBdCBXEV6YH7qLgszJZCN1D9zUhwIcXukGrzC6hkNHN6gMUW3JIZCq8ZBBdEtKOnc9k6qyscWO7KrNwX7okjoQQEn2KK1hF4KpfoAuq8t8FJ5KNMaXFCdtD2uVEadz15EVnqztebk9cbOoJFkMNJyMQLHFTvC2sJ35tuQBTlmZAgjAtQZDZD'
-print 
+fb_id = '<inser facebook id here>'
+fb_auth_token = '<insert facebook auth here>' 
 
 class User(object):
     def __init__(self, data_dict):
@@ -393,6 +392,8 @@ def mst():
 
             s = float(randint(250, 2500) / 1000)
         #sleep(10)
+
+
 def main():
     p = multiprocessing.Process(target=mst, name="tinderbot")
     p.start()
